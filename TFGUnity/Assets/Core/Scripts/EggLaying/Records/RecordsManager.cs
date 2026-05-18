@@ -1,0 +1,99 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UIElements.Experimental;
+
+public class RecordsManager : MonoBehaviour
+{
+    [Header("Data")]
+    [SerializeField] private List<Record> records;
+
+    [Header("UI References")]
+    [SerializeField] private TextMeshProUGUI camText;
+    [SerializeField] private TextMeshProUGUI dateText;
+
+    private SpeciesManager speciesManager;
+    private CameraShotManager cameraShotManager;
+    private NestManager nestManager;
+    private EggManager eggManager;
+
+    private int activeRecordIndex;
+
+    private void Awake()
+    {
+        speciesManager = GetComponentInChildren<SpeciesManager>();
+        cameraShotManager = GetComponentInChildren<CameraShotManager>();
+        nestManager = GetComponentInChildren<NestManager>();
+        eggManager = GetComponentInChildren<EggManager>();
+    }
+
+    private void Start()
+    {
+        activeRecordIndex = 0;
+        UpdateCameraText();
+        UpdateDateText();
+        UpdateScenary();
+    }
+
+    public void NextCamera()
+    {
+        activeRecordIndex++;
+
+        if (activeRecordIndex > records.Count - 1)
+            activeRecordIndex = 0;
+
+        UpdateCameraText();
+        UpdateDateText();
+        UpdateScenary();
+    }
+
+    public void PrevCamera()
+    {
+        activeRecordIndex--;
+
+        if (activeRecordIndex < 0)
+            activeRecordIndex = records.Count - 1;
+
+        UpdateCameraText();
+        UpdateDateText();
+        UpdateScenary();
+    }
+
+    public void NextDay()
+    {
+        records[activeRecordIndex].NextDay();
+        UpdateDateText();
+        UpdateScenary();
+    }
+
+    public void PrevDay()
+    {
+        records[activeRecordIndex].PrevDay();
+        UpdateDateText();
+        UpdateScenary();
+    }
+
+    private void UpdateCameraText()
+    {
+        camText.text = "Cam " + (activeRecordIndex + 1);
+    }
+
+    private void UpdateDateText()
+    {
+        dateText.text = records[activeRecordIndex].ActiveDate.ToString();
+    }
+
+    private void UpdateScenary()
+    {
+        Species sp = records[activeRecordIndex].Species;
+        CameraShot shot = records[activeRecordIndex].CameraShot;
+        Nest nest = records[activeRecordIndex].Nest;
+        bool hasEgg = records[activeRecordIndex].HasEgg;
+        RecordDay recordDay = records[activeRecordIndex].ActiveRecordDay;
+
+        speciesManager.ToggleSpecies(sp, recordDay.HasMale, recordDay.HasFemale, recordDay.MaleAnimation, recordDay.FemaleAnimation);
+        cameraShotManager.ChangeCameraShot(shot);
+        nestManager.ToggleNest(nest);
+        eggManager.ToggleEgg(hasEgg, sp, nest);
+    }
+}
