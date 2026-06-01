@@ -6,8 +6,14 @@ using UnityEngine.UI;
 
 public class Radar : MonoBehaviour
 {
+    [Header("Light Settings")]
+    [SerializeField] private MeshRenderer lightMeshRenderer;
+    [SerializeField] private float enabledLightTime;
+
     [Header("Bird Icon Settings")]
     [SerializeField] private RectTransform birdIcon;
+    [SerializeField] private Color birdColor;
+    [SerializeField] [ColorUsage(true, true)] private Color lightColor;
     [SerializeField] private float birdIconRotationOffset;
 
     [Header("Tiling Values")]
@@ -19,28 +25,52 @@ public class Radar : MonoBehaviour
     [SerializeField] private List<RouteTile> tilesRoute;
     [SerializeField] private float speed;
 
-    private Material material;
+    private Image image;
+    private Image birdIconImage;
+    private Material lightMaterial;
+    private Material mapMaterial;
     private Tile targetTile;
     private Vector2 movement;
     private bool migrationEnded;
     private bool goToTileCenter;
     private bool performingStop;
 
-    private void Start()
+    public void Initialize(bool disableImage = true)
     {
-        Image image = GetComponent<Image>();
-        material = new Material(image.material);
-        image.material = material;
-        material.mainTextureOffset = GetTilePosition(startingTile);
+        image = GetComponentInChildren<Image>();
+        birdIconImage = birdIcon.GetComponent<Image>();
+
+        mapMaterial = new Material(image.material);
+        image.material = mapMaterial;
+
+        lightMaterial = new Material(lightMeshRenderer.material);
+        lightMeshRenderer.material = lightMaterial;
+        lightMaterial.SetColor("_BaseColor", birdColor);
+        lightMaterial.SetColor("_EmissionColor", lightColor);
+        lightMaterial.DisableKeyword("_EMISSION");
+
+        mapMaterial.mainTextureOffset = GetTilePosition(startingTile);
+        image.gameObject.SetActive(disableImage);
 
         SetDestination(tilesRoute[0].Tile);
+    }
+
+    public void EnableImage()
+    {
+        birdIconImage.color = birdColor;
+        image.gameObject.SetActive(true);
+    }
+
+    public void DisableImage()
+    {
+        image.gameObject.SetActive(false);
     }
 
     public void UpdateMovement()
     {
         if (!migrationEnded && !performingStop)
         {
-            material.mainTextureOffset += movement * Time.deltaTime;
+            mapMaterial.mainTextureOffset += movement * Time.deltaTime;
 
             if (!goToTileCenter)
                 CheckForTileChange();
@@ -56,7 +86,7 @@ public class Radar : MonoBehaviour
 
     private void SetDestination(Tile tile)
     {
-        movement = (GetTilePosition(tile) - material.mainTextureOffset).normalized * speed;
+        movement = (GetTilePosition(tile) - mapMaterial.mainTextureOffset).normalized * speed;
         birdIcon.localRotation = Quaternion.Euler(0, 0, GetAngle(movement) + birdIconRotationOffset);
         targetTile = tile;
     }
@@ -70,12 +100,10 @@ public class Radar : MonoBehaviour
 
     private void CheckForTileChange()
     {
-        int detectedColumn = Mathf.FloorToInt((material.mainTextureOffset.x + tileSize * 0.5f) / tileSize);
-        int detectedRow = Mathf.FloorToInt((material.mainTextureOffset.y + tileSize * 0.5f) / tileSize);
+        int detectedColumn = Mathf.FloorToInt((mapMaterial.mainTextureOffset.x + tileSize * 0.5f) / tileSize);
+        int detectedRow = Mathf.FloorToInt((mapMaterial.mainTextureOffset.y + tileSize * 0.5f) / tileSize);
 
         Tile detectedTile = new Tile(detectedRow, detectedColumn);
-
-        bool triggerAlarm = false;
 
         if (!detectedTile.Equals(currentTile))
         {
@@ -83,18 +111,25 @@ public class Radar : MonoBehaviour
 
             if (IsTargetTile(currentTile))
                 goToTileCenter = true;
+        }            
+    }
 
-            triggerAlarm = true;
-        }
+    private void TriggerAlarm()
+    {
+        StartCoroutine(TriggerLightForTime());
+    }
 
-        if (triggerAlarm)
-            Debug.Log("Change detected");
+    IEnumerator TriggerLightForTime()
+    {
+        lightMaterial.EnableKeyword("_EMISSION");
+        yield return new WaitForSeconds(enabledLightTime);
+        lightMaterial.DisableKeyword("_EMISSION");
     }
 
     private void CheckForTileCenter()
     {
-        int detectedColumn = Mathf.FloorToInt((material.mainTextureOffset.x) / tileSize);
-        int detectedRow = Mathf.FloorToInt((material.mainTextureOffset.y) / tileSize);
+        int detectedColumn = Mathf.FloorToInt((mapMaterial.mainTextureOffset.x) / tileSize);
+        int detectedRow = Mathf.FloorToInt((mapMaterial.mainTextureOffset.y) / tileSize);
 
         Tile detectedTile = new Tile(detectedRow, detectedColumn);
 
@@ -107,12 +142,12 @@ public class Radar : MonoBehaviour
             else
             {
                 migrationEnded = true;
-                Debug.Log("Migration ended");
+                TriggerAlarm();
                 return;
             }
 
             goToTileCenter = false;
-            Debug.Log("Center detected");
+            TriggerAlarm();
         }
     }
 
