@@ -5,75 +5,59 @@ using UnityEngine;
 
 public class EggManager : MonoBehaviour
 {
-    [SerializeField] private List<EggReference> eggReferences;
-    private Dictionary<EggKeys, EggValues> eggsDictionary;
+    [SerializeField] private GameObject blackRedstartEgg;
+    [SerializeField] private GameObject defaultEgg;
+    [SerializeField] private List<EggPosition> eggPositions;
+    [SerializeField] private GameObject activeEgg;
 
-    private EggKeys activeEggKeys;
-
-    private void Awake()
-    {
-        eggsDictionary = eggReferences.ToDictionary(e => e.keys, e => e.values);
-    }
 
     public void ToggleEgg(bool hasEgg, Species species, Nest nest)
     {
-        EggValues values;
+        GameObject eggGO;
 
-        if (activeEggKeys != null)
+        if (species.Equals(Species.BlackRedstart))
+            eggGO = blackRedstartEgg;
+        else
+            eggGO = defaultEgg;
+
+        if (activeEgg != null)
         {
-            values = eggsDictionary[activeEggKeys];
-            values.gameObject.SetActive(false);
+            activeEgg.SetActive(false);
         }
 
-        if(!hasEgg)
+        if (!hasEgg)
+        {
+            activeEgg = null;
             return;
+        }
 
-        EggKeys keys = new EggKeys(species, nest);
-        values = eggsDictionary[keys];
-        values.gameObject.SetActive(true);
-        values.gameObject.transform.localPosition = values.position;
-        values.gameObject.transform.localEulerAngles = values.rotation;
-        activeEggKeys = keys;
+        activeEgg = eggGO;
+        eggGO.SetActive(true);
+        MoveEgg(eggGO, nest);
+    }
+
+    private void MoveEgg(GameObject egg, Nest nest)
+    {
+        foreach (EggPosition pos in eggPositions)
+        {
+            if(pos.Nest == nest)
+            {
+                egg.transform.localPosition = pos.Position;
+                egg.transform.localEulerAngles = pos.Rotation;
+                break;
+            }
+        }
     }
 
     [Serializable]
-    private class EggReference
+    private class EggPosition
     {
-        public EggKeys keys;
-        public EggValues values;
+        [SerializeField] private Nest nest;
+        [SerializeField] private Vector3 position;
+        [SerializeField] private Vector3 rotation;
 
-    }
-
-    [Serializable]
-    private class EggValues
-    {
-        public GameObject gameObject;
-        public Vector3 position;
-        public Vector3 rotation;
-    }
-
-    [Serializable]
-    private class EggKeys
-    {
-        public Species species;
-        public Nest nest;
-
-        public EggKeys(Species species, Nest nest)
-        {
-            this.species = species;
-            this.nest = nest;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is not EggKeys other)
-                return false;
-            return species == other.species && nest == other.nest;
-        }
-
-        public override int GetHashCode()
-        {
-            return System.HashCode.Combine(species, nest);
-        }
+        public Nest Nest { get { return nest; } }
+        public Vector3 Position { get { return position; } }
+        public Vector3 Rotation { get { return rotation; } }
     }
 }

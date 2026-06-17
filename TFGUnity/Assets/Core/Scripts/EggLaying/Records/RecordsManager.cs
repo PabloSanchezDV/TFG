@@ -5,12 +5,16 @@ using UnityEngine.UIElements.Experimental;
 
 public class RecordsManager : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private EggRegistryManager eggRegistryManager;
+
     [Header("Data")]
     [SerializeField] private List<Record> records;
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI camText;
     [SerializeField] private TextMeshProUGUI dateText;
+    [SerializeField] private GameObject registeredLabel;
 
     private SpeciesManager speciesManager;
     private CameraShotManager cameraShotManager;
@@ -18,6 +22,7 @@ public class RecordsManager : MonoBehaviour
     private EggManager eggManager;
 
     private int activeRecordIndex;
+    public Record ActiveRecord { get { return records[activeRecordIndex]; } }
 
     private void Awake()
     {
@@ -29,7 +34,9 @@ public class RecordsManager : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.OnEggRegistered.AddListener(UpdateRegisteredLabel);
         activeRecordIndex = 0;
+        UpdateRegisteredLabel();
         UpdateCameraText();
         UpdateDateText();
         UpdateScenary();
@@ -42,7 +49,10 @@ public class RecordsManager : MonoBehaviour
         if (activeRecordIndex > records.Count - 1)
             activeRecordIndex = 0;
 
+        GameManager.Instance.OnActiveRecordIndexChanged?.Invoke(activeRecordIndex);
+
         UpdateCameraText();
+        UpdateRegisteredLabel();
         UpdateDateText();
         UpdateScenary();
     }
@@ -54,7 +64,10 @@ public class RecordsManager : MonoBehaviour
         if (activeRecordIndex < 0)
             activeRecordIndex = records.Count - 1;
 
+        GameManager.Instance.OnActiveRecordIndexChanged?.Invoke(activeRecordIndex);
+
         UpdateCameraText();
+        UpdateRegisteredLabel();
         UpdateDateText();
         UpdateScenary();
     }
@@ -80,7 +93,15 @@ public class RecordsManager : MonoBehaviour
 
     private void UpdateDateText()
     {
-        dateText.text = records[activeRecordIndex].ActiveDate.ToString();
+        dateText.text = "Fecha: " + records[activeRecordIndex].ActiveDate.ToString();
+    }
+
+    private void UpdateRegisteredLabel()
+    {
+        if(eggRegistryManager.IsRegistered(records[activeRecordIndex]))
+            registeredLabel.SetActive(true);
+        else
+            registeredLabel.SetActive(false);
     }
 
     private void UpdateScenary()

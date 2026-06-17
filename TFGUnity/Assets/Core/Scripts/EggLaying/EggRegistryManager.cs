@@ -8,20 +8,14 @@ public class EggRegistryManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private List<Species> availableSpeciesList;
     [SerializeField] private DateRange availableDates;
-    [SerializeField] private List<Record> records;
-    [SerializeField] private List<EggData> eggDataList;
+    [SerializeField] private List<Record> registeredRecords;
 
     [Header("References")]
+    [SerializeField] private RecordsManager recordsManager;
     [SerializeField] private TextMeshProUGUI speciesText;
     [SerializeField] private TextMeshProUGUI dateText;
 
-    private Dictionary<Record, bool> recordsDictionary;
     private int activeSpeciesIndex;
-
-    private void Awake()
-    {
-        recordsDictionary = records.ToDictionary(e => e, e => false);
-    }
 
     private void Start()
     {
@@ -31,6 +25,9 @@ public class EggRegistryManager : MonoBehaviour
         UpdateDateText();
         NextDay();
         UpdateDateText();
+
+        foreach (var record in registeredRecords)
+            GraphsManager.Instance.UpdateGraph(record.Species, record.LayingDate);
     }
 
     public void NextSpecies()
@@ -69,18 +66,16 @@ public class EggRegistryManager : MonoBehaviour
 
     public void RegisterData()
     {
-        EggData data = new EggData(availableSpeciesList[activeSpeciesIndex], availableDates.ActiveDate);
+        Record record = recordsManager.ActiveRecord;
 
-        Record record = records.Find(e => e.Species == data.Species && e.LayingDate.Equals(data.Date));
-
-        if (record != null && !recordsDictionary[record])
+        if (!registeredRecords.Contains(record) && record.Species.Equals(availableSpeciesList[activeSpeciesIndex]) && record.LayingDate.Equals(availableDates.ActiveDate))
         {
-            eggDataList.Add(data);
-            recordsDictionary[record] = true;
-            GraphsManager.Instance.UpdateGraph(data);
+            registeredRecords.Add(record);
+            GraphsManager.Instance.UpdateGraph(availableSpeciesList[activeSpeciesIndex], availableDates.ActiveDate);
+            GameManager.Instance.OnEggRegistered?.Invoke();
         }
         else
-            Debug.Log("Provided EggData doesn't match any Record to be registered");
+            AudioManager.Instance.PlayWrongRegistry();
     }
 
     private void UpdateSpeciesText()
@@ -98,33 +93,38 @@ public class EggRegistryManager : MonoBehaviour
         switch (species)
         {
             case Species.HouseSparrow:
-                return "Passer domesticus";
+                return "Gorrión común";
             case Species.BlueTit:
-                return "Cyanistes caeruleus";
+                return "Herrerillo común";
             case Species.GreatTit:
-                return "Parus major";
+                return "Carbonero común";
             case Species.WhiteWagtail:
-                return "Motacilla alba";
+                return "Lavandera blanca";
             case Species.BlackRedstart:
-                return "Phoenicurus ochruros";
+                return "Colirrojo tizón";
             case Species.TreeSparrow:
-                return "Passer montanus";
+                return "Gorrión molinero";
             case Species.Shrike:
-                return "Petronia petronia";
+                return "Gorrión chillón";
             case Species.CrestedTit:
-                return "Lophophanes cristatus";
+                return "Herrerillo capuchino";
             case Species.MarshTit:
-                return "Poecile palustris";
+                return "Carbonero palustre";
             case Species.CattleEgret:
-                return "Motacilla flava";
+                return "Lavandera boyera";
             case Species.GreyWagtail:
-                return "Motacilla cinerea";
+                return "Lavandera cascadeña";
             case Species.Redstart:
-                return "Phoenicurus phoenicurus";
+                return "Colirrojo real";
             case Species.Nightingale:
-                return "Luscinia megarhynchos";
+                return "Ruiseñor común";
             default:
                 throw new System.Exception("Invalid Species provided");
         }
+    }
+
+    public bool IsRegistered(Record record)
+    {
+        return registeredRecords.Contains(record);
     }
 }

@@ -7,7 +7,7 @@ public class PinSocket : MonoBehaviour
 {
     private int row;
     private int column;
-    public Action<PinType, int, int> onOccupyAction;
+    public Action<PinType, int, int, bool> onOccupyAction;
     public Action<int, int> onDeoccupyAction;
 
     public int Row { get { return row; } set { row = value; } }
@@ -16,7 +16,7 @@ public class PinSocket : MonoBehaviour
     public void OccupySocket(SelectEnterEventArgs args)
     {
         GameObject pin = args.interactableObject.transform.gameObject;
-        onOccupyAction(pin.GetComponent<Pin>().PinType, row, column);
+        onOccupyAction(pin.GetComponent<Pin>().PinType, row, column, true);
     }
 
     public void UnoccupySocket()

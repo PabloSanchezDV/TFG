@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2171300615001852882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2503889393830093406}
+  - component: {fileID: 4225343472390355037}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2503889393830093406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2171300615001852882}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.42195, y: 1.01309, z: 1.17043}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4225343472390355037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2171300615001852882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51373e8f64e535a428fd56303b914d28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  walkieAS: {fileID: 0}
+  radarAS: {fileID: 0}
+  printerAS: {fileID: 0}
+  wrongRegistryAC: {fileID: 8300000, guid: 2aedb130b634d6a408e611122f5c8639, type: 3}
+  migrationAlarmAC: {fileID: 8300000, guid: 1a2767f4e813f7349bea0c8d15b2ceac, type: 3}
+  wrongPinAC: {fileID: 8300000, guid: 64ad8afac3bb1a848a8308be651f1c40, type: 3}
+  tutorialStartAC: {fileID: 8300000, guid: 1a01c1df02b4c57488af3dc8e1584c4f, type: 3}
+  findDayAC: {fileID: 8300000, guid: 2cf9085482c733e4badf6ece63486c47, type: 3}
+  birdAC: {fileID: 8300000, guid: 26ce7ba9498c01540857de701b343516, type: 3}
+  registryAC: {fileID: 8300000, guid: 248022da5a1705141a34d0b49fd7307e, type: 3}
+  barGraphAC: {fileID: 8300000, guid: 481016f4210a1da43baf17aceab0a4bd, type: 3}
+  eggLayingEndAC: {fileID: 8300000, guid: 0acc78b665fb4484aba32aa46702caaf, type: 3}
+  migrationStartAC: {fileID: 8300000, guid: c340e391c79324145acceb474f87d00f, type: 3}
+  erosPresentationAC: {fileID: 8300000, guid: a29676b2162a78245b8ecf50319ff791, type: 3}
+  firstPinCompleteAC: {fileID: 8300000, guid: ee82a8d0b7653904690af2a7f46857c3, type: 3}
+  secondPinCompleteAC: {fileID: 8300000, guid: 15d754ac0cdb4b842ac7eb3ce5aa9aba, type: 3}
+  migrationEndAC: {fileID: 8300000, guid: b3c84026077f87e4fb5604469c507c70, type: 3}
+  analysisStartAC: {fileID: 8300000, guid: dcdbaf6d0d6c8424fabfaddd13f4c72d, type: 3}
+  tendencyGraphPresentationAC: {fileID: 8300000, guid: 68542daee5024514e8f51edd4fdfa4fb, type: 3}
+  tendencyGraphFeedbackAC: {fileID: 8300000, guid: c708dc42462047c499760e3994a6d6d6, type: 3}
+  tendencyGraphExplanationAC: {fileID: 8300000, guid: 46fd9087a0f6fb8488c11e6697f09d34, type: 3}
+  tendencyGraphExplanationWithFindPreviousRegistryAC: {fileID: 8300000, guid: 23afcbc101d63f4429d3e89ec2db1917, type: 3}
+  findPreviousMigrationRegistryAC: {fileID: 8300000, guid: 9c9b599dc456904499104b2b8d73ed93, type: 3}
+  explainPreviousMigrationRegistryAC: {fileID: 8300000, guid: 5eb6f744717c1d04f808571bf49e3e94, type: 3}
+  previousMigrationFeedbackAC: {fileID: 8300000, guid: 8345a994d10f91246bed22f3b9d42c54, type: 3}
+  explainMigrationMapAC: {fileID: 8300000, guid: b840eb6525b6583488eeeddd1e5b0937, type: 3}
+  explainClimatologyGraphsAC: {fileID: 8300000, guid: 355e7d4b48033374182e85211cadc464, type: 3}
+  explainClimateChangeAC: {fileID: 8300000, guid: c93de61ee16976b478127aac35cdda6c, type: 3}
+  explainClimateMapsAC: {fileID: 8300000, guid: de0e9aaaaaa980741a9368270c9357fb, type: 3}
+  printerOnAC: {fileID: 8300000, guid: 17731924795821640b7f1173cee78375, type: 3}
+  printerOffAC: {fileID: 8300000, guid: 9ae33f2fed79fc24d9cf15615fd60aa1, type: 3}
+  printingAC: {fileID: 8300000, guid: 8b953daacd04b7747bcc152ca9b0ceaf, type: 3}

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc027424031e0f48be73f289099ce0e, type: 3}
+  m_Name: HouseSparrowH
+  m_EditorClassIdentifier: Assembly-CSharp::Record
+  species: 0
+  nest: 0
+  cameraShot: 1
+  layingDate:
+    day: 4
+    month: 3
+  recordDays:
+  - {fileID: 11400000, guid: 058e839321227f0409b5dc5b8479a052, type: 2}
+  - {fileID: 11400000, guid: 02ae534134609b44e9008b5686e1ce97, type: 2}
+  - {fileID: 11400000, guid: 2a3b19cf3e3c1b24c93a8d2a8bc6c57d, type: 2}
+  - {fileID: 11400000, guid: efd9e8c595902544bb6bdb81711317e7, type: 2}
+  - {fileID: 11400000, guid: 6f3e98b697bde704ebe49e81279b2ebe, type: 2}
+  - {fileID: 11400000, guid: 79bd896edee33d345a10563a92dbe876, type: 2}
+  - {fileID: 11400000, guid: bcad74a67100b69488d2c3c37dea8370, type: 2}
+  - {fileID: 11400000, guid: ade5ecd4e46990f4bb0bf8d562ad1002, type: 2}
+  - {fileID: 11400000, guid: abe19bafca7be2646a424df2b77523a8, type: 2}
+  - {fileID: 11400000, guid: dc699e963182ccd4c81cad5b4dd055c2, type: 2}
+  activeRecordDayIndex: 0

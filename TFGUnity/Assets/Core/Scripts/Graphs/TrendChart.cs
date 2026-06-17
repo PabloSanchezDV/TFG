@@ -12,11 +12,11 @@ public class TrendChart : MonoBehaviour
 
     private void Start()
     {
-        grid.CreateGrid(yearRange.GetYearsBetween() + 1, dateRange.GetDaysBetween(true) + 1, ConnectPoints);
+        grid.CreateGrid(yearRange.GetYearsBetween() + 1, dateRange.GetDaysBetween(true) + 1, NotifyGraphCompleted);
     }
 
-    private void ConnectPoints()
+    private void NotifyGraphCompleted()
     {
-        Debug.Log("Conecting points...");
+        GameManager.Instance.OnTrendChartCompleted?.Invoke();
     }
 }

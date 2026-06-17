@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc027424031e0f48be73f289099ce0e, type: 3}
+  m_Name: BlueTitK
+  m_EditorClassIdentifier: Assembly-CSharp::Record
+  species: 1
+  nest: 0
+  cameraShot: 0
+  layingDate:
+    day: 5
+    month: 3
+  recordDays:
+  - {fileID: 11400000, guid: 058e839321227f0409b5dc5b8479a052, type: 2}
+  - {fileID: 11400000, guid: 309f2d42213c2e14988f0d0e60b8cc0e, type: 2}
+  - {fileID: 11400000, guid: ffc83f3091bea374baf97b61cac6bbc7, type: 2}
+  - {fileID: 11400000, guid: ac408f7b1d0c71f4f8ca0290e2fb58c4, type: 2}
+  - {fileID: 11400000, guid: d58a4f67cd2a3db4188ddd07066676f5, type: 2}
+  - {fileID: 11400000, guid: 77dcf649a988f3c448a8268f02a3a074, type: 2}
+  - {fileID: 11400000, guid: bcad74a67100b69488d2c3c37dea8370, type: 2}
+  - {fileID: 11400000, guid: 520c44f2f63866d4ead5c190f9cf95b4, type: 2}
+  - {fileID: 11400000, guid: 2a29cd63a4ac2cf4c8e6383aa9977f2c, type: 2}
+  - {fileID: 11400000, guid: 4efd27d38922ca3438d05c15f6eb0c05, type: 2}
+  activeRecordDayIndex: 0

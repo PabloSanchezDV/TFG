@@ -18,7 +18,8 @@ public class NestManager : MonoBehaviour
     public void ToggleNest(Nest nest)
     {
         GameObject go = nestDictionary[activeNest];
-        go.SetActive(false);
+        if(go != null)
+            go.SetActive(false);
 
         go = nestDictionary[nest];
         go.SetActive(true);

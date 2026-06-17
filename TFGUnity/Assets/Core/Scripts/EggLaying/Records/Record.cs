@@ -29,6 +29,8 @@ public class Record : ScriptableObject
 
         if (activeRecordDayIndex >= recordDays.Count)
             activeRecordDayIndex = 0;
+
+        GameManager.Instance.OnActiveRecordDayChanged?.Invoke(activeRecordDayIndex);
     }
 
     public void PrevDay()
@@ -37,5 +39,7 @@ public class Record : ScriptableObject
 
         if (activeRecordDayIndex < 0)
             activeRecordDayIndex = recordDays.Count - 1;
+
+        GameManager.Instance.OnActiveRecordDayChanged?.Invoke(activeRecordDayIndex);
     }    
 }

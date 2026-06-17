@@ -1,4 +1,4 @@
 public enum PinType
 {
-    Red, Blue, Green, Yellow    
+    Red, Blue, Green, Yellow, White, Purple, Pink, Orange    
 }

@@ -3,57 +3,70 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class RadarManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private TextMeshProUGUI memberDisplayText;
+    [SerializeField] private MigrationMap migrationMap;
+
+    [Header("Data")]
+    [SerializeField] private List<Route> registeredRoutes;
 
     [Header("Radar Settings")]
     [SerializeField] private List<RadarBird> radarsList;
     [SerializeField] private float updateTimeInterval;
     [SerializeField] private bool canUpdateRadars;
     [SerializeField] private Bird activeRadar;
+    [SerializeField] private bool activeRadarsSinceBeggining;
 
     public bool CanUpdateRadars { get { return canUpdateRadars; } set { canUpdateRadars = value; StartCoroutine(UpdateRadars()); } }
 
-    private int activeRadarIndex;
-
     private void Start()
     {
-        activeRadarIndex = radarsList.IndexOf(radarsList.Find(e => e.Bird == activeRadar));
-
         foreach(RadarBird radarBird in radarsList)
-            radarBird.Radar.Initialize(radarBird.Bird == activeRadar);
+            radarBird.Radar.Initialize(activeRadarsSinceBeggining, radarBird.Bird == activeRadar);
+
+        migrationMap.UpdateStartingPins(registeredRoutes);
 
         ToggleRadar(activeRadar);
 
         StartCoroutine(UpdateRadars());
     }
 
-    public void NextRadar()
+    //public void NextRadar()
+    //{
+    //    activeRadarIndex++;
+
+    //    if (activeRadarIndex >= radarsList.Count)
+    //        activeRadarIndex = 0;
+
+    //    ToggleRadar(radarsList[activeRadarIndex].Bird);
+    //}
+
+    //public void PrevRadar()
+    //{
+    //    activeRadarIndex--;
+
+    //    if(activeRadarIndex < 0)
+    //        activeRadarIndex = radarsList.Count - 1;
+
+    //    ToggleRadar(radarsList[activeRadarIndex].Bird);
+    //}
+
+    public void ActivateRadar(RadarBird radarBird)
     {
-        activeRadarIndex++;
-
-        if (activeRadarIndex >= radarsList.Count)
-            activeRadarIndex = 0;
-
-        ToggleRadar(radarsList[activeRadarIndex].Bird);
+        radarBird.Radar.CanMove = true;
     }
 
-    public void PrevRadar()
-    {
-        activeRadarIndex--;
-
-        if(activeRadarIndex < 0)
-            activeRadarIndex = radarsList.Count - 1;
-
-        ToggleRadar(radarsList[activeRadarIndex].Bird);
-    }
-
-    private void ToggleRadar(Bird bird)
+    public void ToggleRadar(Bird bird)
     { 
         RadarBird enabledRadar = radarsList.Find(e => e.Bird == activeRadar);
+
+        if(enabledRadar == null)
+            return;
+
         enabledRadar.Radar.DisableImage();
         enabledRadar = radarsList.Find(e => e.Bird == bird);
         enabledRadar.Radar.EnableImage();
@@ -94,7 +107,7 @@ public class RadarManager : MonoBehaviour
     }
 
     [Serializable]
-    private class RadarBird
+    public class RadarBird
     {
         [SerializeField] private Bird bird;
         [SerializeField] private Radar radar;

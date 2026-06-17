@@ -15,6 +15,7 @@ MonoBehaviour:
   m_LayerNames:
   - Default
   - Pin
+  - Magnet
   - 
   - 
   - 
@@ -41,7 +42,6 @@ MonoBehaviour:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - TrendChart
+  - Poke
   - Teleport

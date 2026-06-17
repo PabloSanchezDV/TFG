@@ -22,9 +22,9 @@ public class BarGraph : MonoBehaviour
 
     public void CreateGraph()
     {
-        barHeightStep = container.sizeDelta.y / maxEggs;
-        barWidth = (container.sizeDelta.x / datesRange.GetDaysBetween(true)) * barPercentage;
-        float barSeparationWidth = (container.sizeDelta.x - barWidth * datesRange.GetDaysBetween(true)) / (datesRange.GetDaysBetween(true) + 1);
+        barHeightStep = container.rect.height / maxEggs;
+        barWidth = (container.rect.width / datesRange.GetDaysBetween(true)) * barPercentage;
+        float barSeparationWidth = (container.rect.width - barWidth * datesRange.GetDaysBetween(true)) / (datesRange.GetDaysBetween(true) + 1);
 
         barsDictionary = new Dictionary<int, Bar>();
 
@@ -41,7 +41,8 @@ public class BarGraph : MonoBehaviour
         int index = datesRange.GetDaysUntil(date);
 
         barsDictionary[index].amount++;
-        barsDictionary[index].rect.sizeDelta = new Vector2(barWidth, barHeightStep * barsDictionary[index].amount);
+        barsDictionary[index].rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, barWidth);
+        barsDictionary[index].rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, barHeightStep * barsDictionary[index].amount);
     }
 
     private RectTransform CreateBar(Vector2 anchoredPosition)
