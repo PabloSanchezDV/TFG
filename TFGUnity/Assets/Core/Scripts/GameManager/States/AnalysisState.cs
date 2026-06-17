@@ -51,8 +51,11 @@ public class AnalysisState : FSMTemplateState
     {
         gameManager.OnTrendChartCompleted.RemoveListener(ExplainTrendChart);
         AudioManager.Instance.PlayTendencyGraphExplanation(gameManager.MigrationMap.IsMigrationCompleted());
-        if(gameManager.MigrationMap.IsMigrationCompleted())
+        if (gameManager.MigrationMap.IsMigrationCompleted())
+        {
             gameManager.OnPreviousMigrationRegistryPickedUp.AddListener(AddPreviousMapPins);
+            gameManager.PreviousMigrationRegistry.interacted = false;
+        }
         else 
             gameManager.OnMigrationMapCompleted.AddListener(FindPreviousMigrationRegistry);
     }
